@@ -1,10 +1,21 @@
 "use client";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-neutral-900 p-4">
-      <div className="max-w-md w-full space-y-8 bg-white dark:bg-neutral-800 rounded-lg shadow-md p-8">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-neutral-900 p-4"
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="max-w-md w-full space-y-8 bg-white dark:bg-neutral-800 rounded-lg shadow-md p-8"
+      >
         <div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             Sign in to your account
@@ -53,7 +64,7 @@ export default function LoginPage() {
             Sign up
           </Link>
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

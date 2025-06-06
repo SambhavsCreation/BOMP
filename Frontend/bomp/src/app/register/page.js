@@ -1,10 +1,21 @@
 "use client";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-neutral-900 p-4">
-      <div className="max-w-md w-full space-y-8 bg-white dark:bg-neutral-800 rounded-lg shadow-md p-8">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-neutral-900 p-4"
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="max-w-md w-full space-y-8 bg-white dark:bg-neutral-800 rounded-lg shadow-md p-8"
+      >
         <div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             Create your account
@@ -13,7 +24,10 @@ export default function RegisterPage() {
         <form className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+              >
                 Name
               </label>
               <input
@@ -25,7 +39,10 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+              >
                 Email address
               </label>
               <input
@@ -37,7 +54,10 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+              >
                 Password
               </label>
               <input
@@ -60,12 +80,12 @@ export default function RegisterPage() {
           </div>
         </form>
         <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
             Sign in
           </Link>
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
