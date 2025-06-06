@@ -18,9 +18,12 @@ export default function Home() {
       >
         Welcome to BOMP
       </motion.h1>
+
       <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">
-        This is a demo project. Use the buttons below to sign in or create a new account.
+        This is a demo project. Use the buttons below to sign in or create a new
+        account.
       </p>
+
       <div className="flex gap-4">
         <motion.div whileHover={{ scale: 1.05 }}>
           <Link
