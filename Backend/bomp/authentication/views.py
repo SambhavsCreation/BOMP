@@ -33,6 +33,7 @@ class LoginView(APIView):
 
 
 class TwoFALoginView(APIView):
+    permission_classes = [permissions.AllowAny]
     def post(self, request):
         user_id = request.session.get("pre_2fa_user")
         if not user_id:
