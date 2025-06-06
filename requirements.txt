@@ -1,0 +1,6 @@
+Django>=5.2,<6
+djangorestframework>=3.15
+pyotp>=2.9
+pillow>=10
+PyJWT>=2
+djangorestframework-simplejwt>=5.5
