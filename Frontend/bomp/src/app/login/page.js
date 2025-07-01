@@ -1,8 +1,53 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
+const API_BASE = "http://localhost:8000/api/auth";
+
 export default function LoginPage() {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
+  const [twoFARequired, setTwoFARequired] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!twoFARequired) {
+      const resp = await fetch(`${API_BASE}/login/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+        credentials: "include",
+      });
+      if (resp.status === 202) {
+        setTwoFARequired(true);
+        return;
+      }
+      if (resp.ok) {
+        const data = await resp.json();
+        localStorage.setItem("access", data.access);
+        localStorage.setItem("refresh", data.refresh);
+        router.push("/");
+      }
+    } else {
+      const resp = await fetch(`${API_BASE}/login/2fa/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+        credentials: "include",
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        localStorage.setItem("access", data.access);
+        localStorage.setItem("refresh", data.refresh);
+        router.push("/");
+      }
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -21,17 +66,19 @@ export default function LoginPage() {
             Sign in to your account
           </h2>
         </div>
-        <form className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                Email address
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                Username
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
+                id="username"
+                name="username"
+                type="text"
                 required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
               />
             </div>
@@ -44,9 +91,27 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
               />
             </div>
+            {twoFARequired && (
+              <div>
+                <label htmlFor="token" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  2FA Token
+                </label>
+                <input
+                  id="token"
+                  name="token"
+                  type="text"
+                  required
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+                />
+              </div>
+            )}
           </div>
 
           <div>
@@ -54,7 +119,7 @@ export default function LoginPage() {
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              Sign in
+              {twoFARequired ? "Verify" : "Sign in"}
             </button>
           </div>
         </form>
