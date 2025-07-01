@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "whitenoise.runserver_nostatic",
     "rest_framework",
     "rest_framework.authtoken",
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -144,3 +146,8 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ),
 }
+
+# CORS configuration
+CORS_ALLOW_CREDENTIALS = True
+_cors_env = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000")
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in _cors_env.split(",") if origin]
