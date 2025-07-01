@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const API_BASE = "http://localhost:8000/api/auth";
+const API_BASE = "http://44.203.69.111:8000/api/auth";
 
 export default function LoginPage() {
   const router = useRouter();
